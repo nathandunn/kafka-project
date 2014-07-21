@@ -50,6 +50,16 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         // runtime 'mysql:mysql-connector-java:5.1.27'
         // runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
+
+//        http://kafka.apache.org/documentation.html#introduction
+        runtime 'org.apache.kafka:kafka_2.10:0.8.1.1'
+
+        // https://developer.yahoo.com/hadoop/tutorial/
+        runtime 'org.apache.hadoop:hadoop-core:1.2.1'
+
+//        https://github.com/twitter/hbc
+        // twitter APi
+        runtime 'com.twitter:hbc-core:2.0.2'
     }
 
     plugins {
