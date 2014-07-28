@@ -1,4 +1,5 @@
 package kafka.project
+
 import com.twitter.hbc.ClientBuilder
 import com.twitter.hbc.core.Constants
 import com.twitter.hbc.core.endpoint.StatusesSampleEndpoint
@@ -7,10 +8,16 @@ import com.twitter.hbc.httpclient.BasicClient
 import com.twitter.hbc.httpclient.auth.Authentication
 import com.twitter.hbc.httpclient.auth.OAuth1
 import groovy.json.JsonSlurper
+import org.apache.commons.io.FileUtils
+import org.apache.hadoop.fs.Path
+import org.apache.hadoop.io.IntWritable
+import org.apache.hadoop.io.Text
+import org.apache.hadoop.mapred.*
 
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
+
 //@Transactional
 class TwitterReaderService {
 
@@ -68,5 +75,32 @@ class TwitterReaderService {
         client.stop();
 
         return tweetList
+    }
+
+    def doHadoop(){
+        JobConf conf = new JobConf(WordCounter.class);
+        conf.setJobName("wordcount");
+
+        conf.setOutputKeyClass(Text.class);
+        conf.setOutputValueClass(IntWritable.class);
+
+        conf.setMapperClass(Map.class);
+        conf.setCombinerClass(WordCounter.Reduce.class);
+        conf.setReducerClass(WordCounter.Reduce.class);
+
+        conf.setInputFormat(TextInputFormat.class);
+        conf.setOutputFormat(TextOutputFormat.class);
+
+        Path inputPath = new Path("data/input1.txt");
+        File file = new File("data/output_data");
+        if(file.exists()){
+            FileUtils.deleteDirectory(file);
+        }
+        Path outputPath = new Path("data/output_data");
+
+        FileInputFormat.setInputPaths(conf, inputPath);
+        FileOutputFormat.setOutputPath(conf, outputPath);
+        JobClient.runJob(conf);
+
     }
 }
