@@ -15,3 +15,4 @@ web-app/plugins
 web-app/WEB-INF/classes
 Htseq-grails-grailsPlugins.iml
 htseq-grails-grailsPlugins.iml
+.idea/**
