@@ -119,3 +119,16 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+oauth {
+    providers {
+        twitter {
+            api = org.scribe.builder.api.TwitterApi
+            key = 'oguY8U5DMy0MmSwpLRwD6BbTu'
+            secret = 'RD9D4RB7my82G3ZexSKThLFfkbpy2vWRayNorH9eJsKwk3ezNs'
+            successUri = '/oauth/twitter/success'
+            failureUri = '/oauth/twitter/error'
+            callback = "${baseURL}/oauth/twitter/callback"
+        }
+    }
+}

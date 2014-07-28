@@ -44,6 +44,7 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+        mavenRepo "http://maven.twttr.com/twitter-twttr"
     }
 
     dependencies {
@@ -59,7 +60,17 @@ grails.project.dependency.resolution = {
 
 //        https://github.com/twitter/hbc
         // twitter APi
-        runtime 'com.twitter:hbc-core:2.0.2'
+//        runtime 'com.twitter:hbc-core:2.0.2'
+        runtime 'org.twitter4j:twitter4j-core:4.0.2'
+        runtime 'org.twitter4j:twitter4j-stream:4.0.2'
+        runtime 'com.twitter:hbc-core:2.2.0'
+        runtime 'com.twitter:hbc-twitter4j:2.2.0'
+        runtime 'org.slf4j:slf4j-api:1.7.7'
+
+
+//        compile 'com.twitter:hbc-core:2.2.0'
+        runtime 'org.apache.storm:storm-core:0.9.1-incubating'
+
     }
 
     plugins {
@@ -69,12 +80,30 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":scaffolding:2.0.3"
         compile ':cache:1.1.2'
+//        compile(":spring-security-oauth:2.1.0-RC4"){
+//            excludes "scribe"
+////            org.scribe:scribe:1.3.6
+//        }
+//        compile(':spring-security-oauth-twitter:0.1'){
+//            excludes "scribe"
+//            excludes "spring-security-core"
+////            excludes "spring-security-web"
+//        }
+
+//        compile 'com.twitter:hbc-core:1.4.2'
+
+
+
+
+
+
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate:3.6.10.13" // or ":hibernate4:4.3.5.1"
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.0.2"
         runtime ":resources:1.2.7"
+//        runtime ':oauth:2.0.1'
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0.1"
         //runtime ":cached-resources:1.1"
