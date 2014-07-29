@@ -18,4 +18,3 @@ access secret: <Called the access secret under "Your access secret">
 Based largely on this example (hosebird client):
 
 https://github.com/twitter/hbc/blob/master/hbc-example/
-
