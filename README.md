@@ -5,7 +5,7 @@ Authentication auth = new OAuth1(consumerKey, consumerSecret, token, secret);
 
 I believe I have mine here at:
 
-[[https://apps.twitter.com/app/6565432/keys]]
+https://apps.twitter.com/app/6565432/keys
 
 . . . though these might be backwards 
 
