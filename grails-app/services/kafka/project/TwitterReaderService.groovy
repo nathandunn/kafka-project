@@ -56,7 +56,7 @@ class TwitterReaderService {
         List<String> tweetList = new ArrayList<>()
 
         // Do whatever needs to be done with messages
-        for (int msgRead = 0; msgRead < 10; msgRead++) {
+        for (int msgRead = 0; msgRead < 50; msgRead++) {
             if (client.isDone()) {
                 System.out.println("Client connection closed unexpectedly: " + client.getExitEvent().getMessage());
                 break;
@@ -67,7 +67,7 @@ class TwitterReaderService {
                 System.out.println("Did not receive a message in 5 seconds");
             } else {
                 def result = slurper.parseText(msg)
-//                System.out.println(result.text);
+                System.out.println(result.text);
                 tweetList.add(result.text)
             }
         }
