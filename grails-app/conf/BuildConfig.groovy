@@ -53,10 +53,10 @@ grails.project.dependency.resolution = {
         // runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
 
 //        http://kafka.apache.org/documentation.html#introduction
-        runtime 'org.apache.kafka:kafka_2.10:0.8.1.1'
+//        runtime 'org.apache.kafka:kafka_2.10:0.8.1.1'
 
         // https://developer.yahoo.com/hadoop/tutorial/
-        runtime 'org.apache.hadoop:hadoop-core:1.2.1'
+//        runtime 'org.apache.hadoop:hadoop-core:1.2.1'
 
 //        https://github.com/twitter/hbc
         // twitter APi
@@ -69,7 +69,7 @@ grails.project.dependency.resolution = {
 
 
 //        compile 'com.twitter:hbc-core:2.2.0'
-        runtime 'org.apache.storm:storm-core:0.9.1-incubating'
+//        runtime 'org.apache.storm:storm-core:0.9.1-incubating'
 
     }
 
@@ -80,6 +80,10 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":scaffolding:2.0.3"
         compile ':cache:1.1.2'
+
+        runtime ':elasticsearch:0.0.3.2'
+//        compile ":elasticsearch-gorm:0.0.2.4"
+
 //        compile(":spring-security-oauth:2.1.0-RC4"){
 //            excludes "scribe"
 ////            org.scribe:scribe:1.3.6

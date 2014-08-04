@@ -89,12 +89,76 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
+
+//elasticSearch {
+//    /**
+//     * Date formats used by the unmarshaller of the JSON responses
+//     */
+//    date.formats = ["yyyy-MM-dd'T'HH:mm:ss'Z'"]
+//    /**
+//     * Hosts for remote ElasticSearch instances.
+//     * Will only be used with the "transport" client mode.
+//     * If the client mode is set to "transport" and no hosts are defined, ["localhost", 9300] will be used by default.
+//     */
+//    client.hosts = [
+//            [host:'localhost', port:9300]
+//    ]
+//
+//    /**
+//     * Default mapping property exclusions
+//     *
+//     * No properties matching the given names will be mapped by default
+//     * ie, when using "searchable = true"
+//     *
+//     * This does not apply for classes using mapping by closure
+//     */
+//    defaultExcludedProperties = ["password"]
+//
+//    /**
+//     * Determines if the plugin should reflect any database save/update/delete automatically
+//     * on the ES instance. Default to false.
+//     */
+//    disableAutoIndex = false
+//
+//    /**
+//     * Should the database be indexed at startup.
+//     *
+//     * The value may be a boolean true|false.
+//     * Indexing is always asynchronous (compared to Searchable plugin) and executed after BootStrap.groovy.
+//     */
+//    bulkIndexOnStartup = true
+//
+//    /**
+//     *  Max number of requests to process at once. Reduce this value if you have memory issue when indexing a big amount of data
+//     *  at once. If this setting is not specified, 500 will be use by default.
+//     */
+//    maxBulkRequest = 500
+//
+//
+//    /**
+//     * The name of the ElasticSearch mapping configuration property that annotates domain classes. The default is 'searchable'.
+//     */
+//    searchableProperty.name = 'searchable'
+//
+//}
+elasticSearch {
+    datastoreImpl = 'hibernateDatastore'
+}
+
+
+
+//http://noamt.github.io/elasticsearch-grails-plugin/guide/configuration.html
+
 environments {
     development {
         grails.logging.jul.usebridge = true
+        elasticSearch.client.mode = 'local'
+//        elasticSearch.client.mode = 'node'
     }
     production {
         grails.logging.jul.usebridge = false
+        elasticSearch.client.mode = 'node'
+//        elasticSearch.client.mode = 'dataNode'
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
@@ -132,3 +196,5 @@ oauth {
         }
     }
 }
+
+
