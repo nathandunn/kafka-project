@@ -100,9 +100,9 @@ elasticSearch {
      * Will only be used with the "transport" client mode.
      * If the client mode is set to "transport" and no hosts are defined, ["localhost", 9300] will be used by default.
      */
-    client.hosts = [
-            [host:'localhost', port:9300]
-    ]
+//    client.hosts = [
+//            [host:'localhost', port:9300]
+//    ]
 
     /**
      * Default mapping property exclusions
@@ -141,6 +141,10 @@ elasticSearch {
     searchableProperty.name = 'searchable'
 
     datastoreImpl = 'hibernateDatastore'
+
+//    node.client = true
+    client.transport.sniff = true
+
 }
 //elasticSearch {
 //}
@@ -152,8 +156,9 @@ elasticSearch {
 environments {
     development {
         grails.logging.jul.usebridge = true
-        elasticSearch.client.mode = 'local'
-//        elasticSearch.client.mode = 'transport'
+//        elasticSearch.client.mode = 'local'
+//        elasticSearch.client.mode = 'node'
+        elasticSearch.client.mode = 'transport'
     }
     production {
         grails.logging.jul.usebridge = false

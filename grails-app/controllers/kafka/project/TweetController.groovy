@@ -29,7 +29,7 @@ class TweetController {
 
         println "tweet count ${Tweet.count()}"
 
-        def res = Tweet.search("message:trying*")
+        def res = Tweet.search("message:UNIQ*")
         List<Tweet> tweetInstanceList = res.searchResults
         println "results: ${res}"
 
