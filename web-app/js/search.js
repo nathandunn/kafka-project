@@ -1,7 +1,7 @@
 var as = angular.module('searchApp', []);
 as.controller('SearchController', function ($scope, $rootScope, $http, $location) {
 
-    $scope.search = 'message:*yolo*';
+    $scope.message = '*t*';
 
 //    $scope.addAssignment = function () {
 //
@@ -36,8 +36,8 @@ as.controller('SearchController', function ($scope, $rootScope, $http, $location
 //    };
 
     $scope.performSearch = function () {
-        console.log('search: ' + $scope.search);
-        $http.get('/kafka-project/tweet/doSearchTweets/?message=' + $scope.search)
+        console.log('message: ' + $scope.message);
+        $http.get('/kafka-project/tweet/doSearchTweets/?message=' + $scope.message)
             .success(function (data, status, headers, config) {
                 $scope.tweetResults = data
             });
@@ -46,13 +46,14 @@ as.controller('SearchController', function ($scope, $rootScope, $http, $location
 
     var doSearch = function () {
 
-        console.log('search: ' + $scope.search);
-        if ($scope.search) {
-            $http.get('/kafka-project/tweet/doSearchTweets/?message=' + $scope.search)
-                .success(function (data, status, headers, config) {
-                    $scope.tweetResults = data
-                });
-            $scope.errorString = '';
+        console.log('message: ' + $scope.message);
+        if ($scope.message) {
+            $scope.performSearch();
+//            $http.get('/kafka-project/tweet/doSearchTweets/?message=' + $scope.message)
+//                .success(function (data, status, headers, config) {
+//                    $scope.tweetResults = data
+//                });
+//            $scope.errorString = '';
         }
         else {
             $http.get('/kafka-project/tweet/doSearchTweets/')

@@ -7,6 +7,7 @@
     <title><g:message code="default.show.label" args="[entityName]"/></title>
     <g:javascript src="angular.js"/>
     <g:javascript src="search.js"/>
+    %{--<g:javascript src="bootstrap.min.js"/>--}%
 </head>
 
 <body>
@@ -29,19 +30,31 @@
     </g:if>
 
 
-    <div ng-controller="SearchController">
-        <label for="search">Search</label>
-        <input name="search" type="search" ng-model="search" ng-change="performSearch();">
-        <button type="button" value="Search" ng-click="performSearch();">Search</button>
+    <div class="content scaffold-list" role="main" ng-controller="SearchController">
+        <label for="message">Message</label>
+        <input id="message" name="message" type="message" ng-model="message" ng-change="performSearch();">
+        %{--<button type="button" value="Search" ng-click="performSearch();">Search</button>--}%
         [{{tweetResults.length}}]
 
 
-        <table>
+        <table class="table table-bordered table-responsive" border="1">
+            <thead>
+            <td>Message</td>
+            <td>User</td>
+            <td>Tags</td>
+            </thead>
+            <tbody>
+
             <tr ng-repeat="tweet in tweetResults">
-                <td>{{tweet.message}}</td>
-                <td>{{tweet.user}}</td>
-                <td>{{tweet.tags}}</td>
+                <td>
+                    <a href="https://twitter.com/SOMEUSER/status/{{tweet.twitterId}}">{{tweet.message}}</a>
+                </td>
+                <td>
+                    <a href="https://twitter.com/{{tweet.userName}}">{{tweet.userName}}</a>
+                </td>
+                <td>{{tweet.tags.split("||").join(" ")}}</td>
             </tr>
+            </tbody>
         </table>
     </div>
 
