@@ -1,9 +1,9 @@
 package kafka.project
 
-
+import grails.converters.JSON
+import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class TweetController {
@@ -148,5 +148,21 @@ class TweetController {
         Tweet.deleteAll(Tweet.all)
         flash.message = "All tweets should be deleted ${Tweet.count}"
         redirect(uri: "/")
+    }
+
+    def searchTweets(){
+
+    }
+
+    def doSearchTweets(){
+        println "Query ${params.message}"
+        if(params.message){
+            def res = Tweet.search(params.message)
+            List<Tweet> tweetInstanceList = res.searchResults
+            render tweetInstanceList as JSON
+        }
+        else{
+            render Tweet.all as JSON
+        }
     }
 }
