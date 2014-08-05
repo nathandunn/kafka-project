@@ -31,7 +31,7 @@ class TweetController {
 
         println "tweet count ${Tweet.count()}"
 
-        def res = Tweet.search("message:UNIQ*")
+        def res = Tweet.search("message:*Lana Del Rey*")
         List<Tweet> tweetInstanceList = res.searchResults
         println "results: ${res}"
 
@@ -141,5 +141,12 @@ class TweetController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    @Transactional
+    def deleteAll(){
+        Tweet.deleteAll(Tweet.all)
+        flash.message = "All tweets should be deleted ${Tweet.count}"
+        redirect(uri: "/")
     }
 }

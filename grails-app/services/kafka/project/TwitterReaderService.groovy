@@ -111,9 +111,13 @@ class TwitterReaderService {
         terms << "twitterapi"
         terms << "#yolo"
         terms << "#photographphotographyy"
-        terms << "#elasticsearch"
+//        terms << "#elasticsearch"
+        terms << "#mockumentary"
+        terms << "#mtvhottest"
+        terms << "#iphone"
 
         endpoint.trackTerms(Lists.newArrayList(terms));
+        endpoint.languages(Lists.newArrayList("en"))
 
 //        endpoint.addQueryParameter("retweet","true")
 
@@ -150,7 +154,7 @@ class TwitterReaderService {
                 } else {
                     def result = slurper.parseText(msg)
                     if(result.user && result.entities){
-                        println "result:[${result}]"
+//                        println "result:[${result}]"
                         List<String> hashtags = new ArrayList<>()
                         result.entities.each{ entity ->
                             if(entity.key=="hashtags"){
