@@ -1,7 +1,7 @@
 package kafka.project
-
 import com.twitter.hbc.ClientBuilder
 import com.twitter.hbc.core.Constants
+import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
 import com.twitter.hbc.core.endpoint.StatusesSampleEndpoint
 import com.twitter.hbc.core.processor.StringDelimitedProcessor
 import com.twitter.hbc.httpclient.BasicClient
@@ -9,16 +9,15 @@ import com.twitter.hbc.httpclient.auth.Authentication
 import com.twitter.hbc.httpclient.auth.OAuth1
 import grails.transaction.Transactional
 import groovy.json.JsonSlurper
+import org.elasticsearch.common.collect.Lists
 
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
-
+import java.util.concurrent.TimeUnit
 //import org.apache.hadoop.fs.Path
 //import org.apache.hadoop.io.IntWritable
 //import org.apache.hadoop.io.Text
 //import org.apache.hadoop.mapred.*
-import java.util.concurrent.TimeUnit
-
 @Transactional
 class TwitterReaderService {
 
@@ -100,8 +99,23 @@ class TwitterReaderService {
 
         // Define our endpoint: By default, delimited=length is set (we need this for our processor)
         // and stall warnings are on.
-        StatusesSampleEndpoint endpoint = new StatusesSampleEndpoint();
+//        StatusesSampleEndpoint endpoint = new StatusesSampleEndpoint();
+        StatusesFilterEndpoint endpoint = new StatusesFilterEndpoint();
         endpoint.stallWarnings(false);
+//        Location.Coordinate southwest = new Location.Coordinate(-87.648926, 41.883109);
+//        Location.Coordinate northeast = new Location.Coordinate(-87.606354, 41.828050);
+//        Location chicago = new Location(southwest, northeast);
+//        endpoint.locations(Lists.newArrayList(chicago));
+
+        List terms = []
+        terms << "twitterapi"
+        terms << "#yolo"
+        terms << "#photographphotographyy"
+        terms << "#elasticsearch"
+
+        endpoint.trackTerms(Lists.newArrayList(terms));
+
+//        endpoint.addQueryParameter("retweet","true")
 
         // Create an appropriately sized blocking queue
         BlockingQueue<String> queue = new LinkedBlockingQueue<String>(10000);
@@ -135,32 +149,27 @@ class TwitterReaderService {
                     System.out.println("Did not receive a message in 5 seconds");
                 } else {
                     def result = slurper.parseText(msg)
-    //                if(msgRead < 5){
-    //                    println "${msgRead} FULL: ${result}"
-    //                }
-    //                println "${msgRead} TEXT: ${result}"
                     if(result.user && result.entities){
-//                        println "result:[${result}]"
+                        println "result:[${result}]"
                         List<String> hashtags = new ArrayList<>()
                         result.entities.each{ entity ->
-//                            println "entity:[${entity}]"
-//                            println "entity properties:[${entity.properties}]"
-//                            println "entity key:[${entity.key}]"
-//                            println "entity value:[${entity.value}]"
                             if(entity.key=="hashtags"){
-//                            println "tags value:[${entity.value}]"
                                 entity.value.each{ hashtag ->
-                                    println "hashtag:[${hashtag}]"
+//                                    println "hashtag:[${hashtag}]"
                                     hashtags.add(hashtag.text)
                                 }
                             }
                         }
+                        println "adding with hashtag ${hashtags}"
                         Tweet tweet = new Tweet(
-                                message: result.text
-                                ,user: result.user.name
+                                twitterId: result.id
+                                ,message: result.text
+//                                ,userName: result.user.name
+                                ,userName: result.user.screen_name
+                                ,userId: result.user.id
     //                        created_at: TueAug0517: 32: 50+00002014,
     //                        ,postDate: result.created_at
-                                ,tags: hashtags
+                                ,tags: hashtags?.join("||")
                                 ,postDate: new Date()
                         ).save()
                         ++count
@@ -176,8 +185,8 @@ class TwitterReaderService {
         }
         long stopTime = System.currentTimeMillis()
         double totalTime = (stopTime - startTime) / 1000.0
-        println "Total time: ${ totalTime } seconds "
-        println "Messages per sec: ${ count / totalTime } "
+//        println "Total time: ${ totalTime } seconds "
+//        println "Messages per sec: ${ count / totalTime } "
 
 
         return [count:count,fetchTime:totalTime]

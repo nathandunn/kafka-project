@@ -44,7 +44,12 @@ class TweetController {
         def stats = twitterReaderService.pullTweets(params.numTweets as Integer)
         println stats
         flash.message  = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
-        redirect(action: "index")
+        if(stats.count==0){
+            redirect(action: "pullTweets")
+        }
+        else{
+        redirect(action: "index",params: [sort:"postDate",order:"desc"])
+        }
     }
 
     def show(Tweet tweetInstance) {

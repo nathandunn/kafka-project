@@ -31,7 +31,7 @@
                         Num Docs
                         <span class="required-indicator">*</span>
                     </label>
-                    <g:field type="number" name="numTweets" required="" value="10"/>
+                    <g:field type="number" name="numTweets" required="" value="3"/>
 
                 </div>
                 <br/>
