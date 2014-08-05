@@ -28,15 +28,30 @@
 			</ul>
 			</g:hasErrors>
 			<g:form url="[resource:tweetInstance, action:'doPullTweets']" >
-                <div class="fieldcontain ${hasErrors(bean: tweetInstance, field: 'message', 'error')} required">
-                    <label for="numDocs">
+                <div class="fieldcontain ${hasErrors(bean: tweetInstance, field: 'numTweets', 'error')} required">
+                    <label for="numTweets">
                         Num Docs
                         <span class="required-indicator">*</span>
                     </label>
                     <g:field type="number" name="numTweets" required="" value="3"/>
-
                 </div>
-                <br/>
+
+                <div class="fieldcontain ${hasErrors(bean: tweetInstance, field: 'pullSeconds', 'error')} required">
+                    <label for="pullSeconds">
+                        Pull Seconds
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <g:field type="number" name="pullSeconds" required="" value="3"/>
+                </div>
+
+                <div class="fieldcontain ${hasErrors(bean: tweetInstance, field: 'tweetTags', 'error')} required">
+                    <label for="tweetTags">
+                        Tags
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <g:field type="number" name="tweetTags" required="" value="3"/>
+                </div>
+
 
                 %{--<div class="fieldcontain ${hasErrors(bean: tweetInstance, field: 'postDate', 'error')} required">--}%
                     %{--<label for="postDate">--}%

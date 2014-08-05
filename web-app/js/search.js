@@ -1,7 +1,8 @@
 var as = angular.module('searchApp', []);
 as.controller('SearchController', function ($scope, $rootScope, $http, $location) {
 
-    $scope.message = '*t*';
+    $scope.message = 'belieber';
+    $scope.tags= 'MTVHottest';
 
 //    $scope.addAssignment = function () {
 //
@@ -37,7 +38,7 @@ as.controller('SearchController', function ($scope, $rootScope, $http, $location
 
     $scope.performSearch = function () {
         console.log('message: ' + $scope.message);
-        $http.get('/kafka-project/tweet/doSearchTweets/?message=' + $scope.message)
+        $http.get('/kafka-project/tweet/doSearchTweets/?message=' + $scope.message+'&tags='+$scope.tags)
             .success(function (data, status, headers, config) {
                 $scope.tweetResults = data
             });

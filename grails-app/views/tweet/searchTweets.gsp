@@ -32,7 +32,9 @@
 
     <div class="content scaffold-list" role="main" ng-controller="SearchController">
         <label for="message">Message</label>
-        <input id="message" name="message" type="message" ng-model="message" ng-change="performSearch();">
+        <input id="message" name="message" type="text" ng-model="message" ng-change="performSearch();">
+        %{--<label for="tags">Tags</label>--}%
+        %{--<input id="tags" name="tags" type="text" ng-model="tags" ng-change="performSearch();">--}%
         %{--<button type="button" value="Search" ng-click="performSearch();">Search</button>--}%
         [{{tweetResults.length}}]
 

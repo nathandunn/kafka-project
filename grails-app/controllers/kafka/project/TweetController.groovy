@@ -29,11 +29,11 @@ class TweetController {
 //                ,postDate: new Date()
 //        ).save(failOnError: true)
 
-        println "tweet count ${Tweet.count()}"
+//        println "tweet count ${Tweet.count()}"
 
         def res = Tweet.search("message:*Lana Del Rey*")
         List<Tweet> tweetInstanceList = res.searchResults
-        println "results: ${res}"
+//        println "results: ${res}"
 
         render view: "index", model: [tweetInstanceList:tweetInstanceList,tweetInstanceCount: res.total]
 
@@ -155,14 +155,31 @@ class TweetController {
     }
 
     def doSearchTweets(){
-        println "Query ${params.message}"
+//        println "Query ${params.message}"
+        List<Tweet> tweetInstanceList
+        String queryString = ""
         if(params.message){
-            def res = Tweet.search(params.message)
-            List<Tweet> tweetInstanceList = res.searchResults
-            render tweetInstanceList as JSON
+//            println "message only search"
+//            queryString += "message:*${params.message}*"
+            queryString += "*${params.message}*"
+        }
+//        if(params.tags) {
+//            println "message and tag search"
+//            if(queryString.size()>0) {
+//                queryString += ","
+//            }
+//            queryString += "tags:*${params.tags}*"
+////            def res = Tweet.search("message:*"+params.message+"*,tags:"+params.tags)
+//        }
+
+        if(queryString.size()>0){
+//            println "queryString ${queryString}"
+            def res = Tweet.search(queryString)
+            tweetInstanceList = res.searchResults
         }
         else{
-            render Tweet.all as JSON
+            tweetInstanceList = Tweet.all
         }
+        render tweetInstanceList as JSON
     }
 }
