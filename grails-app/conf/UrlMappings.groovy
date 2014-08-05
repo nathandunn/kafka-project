@@ -7,7 +7,8 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/index")
+//        "/"(view:"/index")
+        "/"(action: "/pullTweets",controller: "tweet")
         "500"(view:'/error')
 	}
 }

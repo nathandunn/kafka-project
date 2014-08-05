@@ -11,4 +11,5 @@ class Tweet {
     String user
     Date postDate
     String message
+    List<String> tags
 }

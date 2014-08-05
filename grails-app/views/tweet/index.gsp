@@ -20,6 +20,7 @@
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
+            Total tweets: ${tweetInstanceCount}
 			<table>
 			<thead>
 					<tr>
@@ -29,7 +30,8 @@
 						<g:sortableColumn property="postDate" title="${message(code: 'tweet.postDate.label', default: 'Post Date')}" />
 					
 						<g:sortableColumn property="user" title="${message(code: 'tweet.user.label', default: 'User')}" />
-					
+                        %{--<th>Tags</th>--}%
+
 					</tr>
 				</thead>
 				<tbody>
@@ -41,7 +43,8 @@
 						<td><g:formatDate date="${tweetInstance.postDate}" /></td>
 					
 						<td>${fieldValue(bean: tweetInstance, field: "user")}</td>
-					
+                        %{--<td>${fieldValue(bean: tweetInstance, field: "tags")}</td>--}%
+
 					</tr>
 				</g:each>
 				</tbody>

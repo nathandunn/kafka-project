@@ -12,6 +12,8 @@ class TweetController {
 
 //    def elasticSearchService
 
+    def twitterReaderService
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
 
@@ -37,8 +39,20 @@ class TweetController {
 
     }
 
+    @Transactional
+    def doPullTweets(){
+        def stats = twitterReaderService.pullTweets(params.numTweets as Integer)
+        println stats
+        flash.message  = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
+        redirect(action: "index")
+    }
+
     def show(Tweet tweetInstance) {
         respond tweetInstance
+    }
+
+    def pullTweets(){
+
     }
 
     def create() {
