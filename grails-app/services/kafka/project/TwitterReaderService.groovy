@@ -110,7 +110,7 @@ class TwitterReaderService {
         List terms = []
         terms << "twitterapi"
         terms << "#yolo"
-        terms << "#photographphotographyy"
+        terms << "#photographyy"
 //        terms << "#elasticsearch"
         terms << "#mockumentary"
         terms << "#mtvhottest"
@@ -164,7 +164,6 @@ class TwitterReaderService {
                                 }
                             }
                         }
-                        println "adding with hashtag ${hashtags}"
                         Tweet tweet = new Tweet(
                                 twitterId: result.id
                                 ,message: result.text
@@ -177,6 +176,7 @@ class TwitterReaderService {
                                 ,postDate: new Date()
                         ).save()
                         ++count
+                        println "Added tweet ${count}"
                     }
     //                println ""
                 }

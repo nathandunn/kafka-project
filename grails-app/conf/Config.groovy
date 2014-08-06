@@ -100,9 +100,10 @@ elasticSearch {
      * Will only be used with the "transport" client mode.
      * If the client mode is set to "transport" and no hosts are defined, ["localhost", 9300] will be used by default.
      */
-//    client.hosts = [
-//            [host:'localhost', port:9300]
-//    ]
+    client.hosts = [
+            [host:'localhost', port:9300]
+//            , [host:'localhost', port:9301]
+    ]
 
     /**
      * Default mapping property exclusions
