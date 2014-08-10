@@ -17,10 +17,10 @@ class TweetController {
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
 
-        respond Tweet.list(params), model:[tweetInstanceCount: Tweet.count()]
+        respond Tweet.list(params), model: [tweetInstanceCount: Tweet.count()]
     }
 
-    def search(){
+    def search() {
 
 //       def res =  elasticSearchService.search("message:trying*")
 //        Tweet tweet = new Tweet(
@@ -35,20 +35,19 @@ class TweetController {
         List<Tweet> tweetInstanceList = res.searchResults
 //        println "results: ${res}"
 
-        render view: "index", model: [tweetInstanceList:tweetInstanceList,tweetInstanceCount: res.total]
+        render view: "index", model: [tweetInstanceList: tweetInstanceList, tweetInstanceCount: res.total]
 
     }
 
     @Transactional
-    def doPullTweets(){
+    def doPullTweets() {
         def stats = twitterReaderService.pullTweets(params.numTweets as Integer)
         println stats
-        flash.message  = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
-        if(stats.count==0){
+        flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
+        if (stats.count == 0) {
             redirect(action: "pullTweets")
-        }
-        else{
-        redirect(action: "index",params: [sort:"postDate",order:"desc"])
+        } else {
+            redirect(action: "index", params: [sort: "postDate", order: "desc"])
         }
     }
 
@@ -56,7 +55,7 @@ class TweetController {
         respond tweetInstance
     }
 
-    def pullTweets(){
+    def pullTweets() {
 
     }
 
@@ -72,11 +71,11 @@ class TweetController {
         }
 
         if (tweetInstance.hasErrors()) {
-            respond tweetInstance.errors, view:'create'
+            respond tweetInstance.errors, view: 'create'
             return
         }
 
-        tweetInstance.save flush:true
+        tweetInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
@@ -99,18 +98,18 @@ class TweetController {
         }
 
         if (tweetInstance.hasErrors()) {
-            respond tweetInstance.errors, view:'edit'
+            respond tweetInstance.errors, view: 'edit'
             return
         }
 
-        tweetInstance.save flush:true
+        tweetInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Tweet.label', default: 'Tweet'), tweetInstance.id])
                 redirect tweetInstance
             }
-            '*'{ respond tweetInstance, [status: OK] }
+            '*' { respond tweetInstance, [status: OK] }
         }
     }
 
@@ -122,14 +121,14 @@ class TweetController {
             return
         }
 
-        tweetInstance.delete flush:true
+        tweetInstance.delete flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'Tweet.label', default: 'Tweet'), tweetInstance.id])
-                redirect action:"index", method:"GET"
+                redirect action: "index", method: "GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -139,26 +138,26 @@ class TweetController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'tweet.label', default: 'Tweet'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
 
     @Transactional
-    def deleteAll(){
+    def deleteAll() {
         Tweet.deleteAll(Tweet.all)
         flash.message = "All tweets should be deleted ${Tweet.count}"
         redirect(uri: "/")
     }
 
-    def searchTweets(){
+    def searchTweets() {
 
     }
 
-    def doSearchTweets(){
+    def doSearchTweets() {
 //        println "Query ${params.message}"
         List<Tweet> tweetInstanceList
         String queryString = ""
-        if(params.message){
+        if (params.message) {
 //            println "message only search"
 //            queryString += "message:*${params.message}*"
             queryString += "*${params.message}*"
@@ -172,14 +171,21 @@ class TweetController {
 ////            def res = Tweet.search("message:*"+params.message+"*,tags:"+params.tags)
 //        }
 
-        if(queryString.size()>0){
+        Long startTime = System.currentTimeMillis()
+        Long stopTime = System.currentTimeMillis()
+        if (queryString.size() > 0) {
 //            println "queryString ${queryString}"
+
             def res = Tweet.search(queryString)
+            stopTime = System.currentTimeMillis()
+
             tweetInstanceList = res.searchResults
-        }
-        else{
+        } else {
             tweetInstanceList = Tweet.all
         }
-        render tweetInstanceList as JSON
+        TweetResult results = new TweetResult()
+        results.tweetResults = tweetInstanceList
+        results.tweetTime = (stopTime - startTime) / 1000f
+        render results as JSON
     }
 }

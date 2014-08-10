@@ -40,7 +40,9 @@ as.controller('SearchController', function ($scope, $rootScope, $http, $location
         console.log('message: ' + $scope.message);
         $http.get('/kafka-project/tweet/doSearchTweets/?message=' + $scope.message+'&tags='+$scope.tags)
             .success(function (data, status, headers, config) {
-                $scope.tweetResults = data
+                console.log("Search message "+ JSON.stringify(data));
+                $scope.tweetResults = data.tweetResults;
+                $scope.tweetTime = data.tweetTime;
             });
         $scope.errorString = '';
     }
@@ -59,7 +61,9 @@ as.controller('SearchController', function ($scope, $rootScope, $http, $location
         else {
             $http.get('/kafka-project/tweet/doSearchTweets/')
                 .success(function (data, status, headers, config) {
-                    $scope.tweetResults = data
+                    console.log("ASDF "+ JSON.stringify(data));
+                    $scope.tweetResults = data.tweetResults;
+                    $scope.tweetTime = data.tweetTime;
                 });
             $scope.errorString = '';
         }

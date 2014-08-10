@@ -115,6 +115,16 @@ class TwitterReaderService {
         terms << "#mockumentary"
         terms << "#mtvhottest"
         terms << "#iphone"
+        terms << "#ipad"
+        terms << "#ipadgames"
+        terms << "#gameinsight"
+        terms << "#RT"
+        terms << "#android"
+        terms << "#androidgames"
+        terms << "#BestFandom2014"
+        terms << "#RETWEET"
+        terms << "#TeamFollowBack"
+        terms << "#TeamFollowBack"
 
         endpoint.trackTerms(Lists.newArrayList(terms));
         endpoint.languages(Lists.newArrayList("en"))
@@ -176,7 +186,7 @@ class TwitterReaderService {
                                 ,postDate: new Date()
                         ).save()
                         ++count
-                        println "Added tweet ${count}"
+//                        println "Added tweet ${count}"
                     }
     //                println ""
                 }

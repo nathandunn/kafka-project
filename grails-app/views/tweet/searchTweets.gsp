@@ -37,6 +37,7 @@
         %{--<input id="tags" name="tags" type="text" ng-model="tags" ng-change="performSearch();">--}%
         %{--<button type="button" value="Search" ng-click="performSearch();">Search</button>--}%
         [{{tweetResults.length}}]
+        Time - {{tweetTime}} (s)
 
 
         <table class="table table-bordered table-responsive" border="1">

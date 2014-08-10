@@ -20,12 +20,12 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: tweetInstance, field: 'user', 'error')} required">
-	<label for="user">
-		<g:message code="tweet.user.label" default="User" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:textField name="user" required="" value="${tweetInstance?.user}"/>
+%{--<div class="fieldcontain ${hasErrors(bean: tweetInstance, field: 'user', 'error')} required">--}%
+	%{--<label for="user">--}%
+		%{--<g:message code="tweet.user.label" default="User" />--}%
+		%{--<span class="required-indicator">*</span>--}%
+	%{--</label>--}%
+	%{--<g:textField name="user" required="" value="${tweetInstance?.user}"/>--}%
 
-</div>
+%{--</div>--}%
 
