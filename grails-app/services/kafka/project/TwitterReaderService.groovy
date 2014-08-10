@@ -111,7 +111,7 @@ class TwitterReaderService {
         terms << "twitterapi"
         terms << "#yolo"
         terms << "#photographyy"
-//        terms << "#elasticsearch"
+        terms << "#elasticsearch"
         terms << "#mockumentary"
         terms << "#mtvhottest"
         terms << "#iphone"
@@ -123,7 +123,6 @@ class TwitterReaderService {
         terms << "#androidgames"
         terms << "#BestFandom2014"
         terms << "#RETWEET"
-        terms << "#TeamFollowBack"
         terms << "#TeamFollowBack"
 
         endpoint.trackTerms(Lists.newArrayList(terms));
