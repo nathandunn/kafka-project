@@ -68,7 +68,8 @@ class TweetController {
     def doPullTweets4j() {
         def stats = twitter4JReaderService.pullTweets(params.numTweets as Integer)
         println stats
-        flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
+//        flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
+        flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds (${stats.count / stats.fetchTime } tweets / sec)"
             redirect(action: "pullTweets4j")
     }
 

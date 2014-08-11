@@ -65,16 +65,16 @@ class Twitter4JReaderService {
 
         twitterStream.sample()
         long startTime = System.currentTimeMillis()
-        int count = 0
+//        int count = 0
         while (tweetResultListener.count < tweetResultListener.maxCount) {
-            println "sleeping ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
+//            println "sleeping ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
             new Object().sleep(1000)
             List<Tweet> tweetList = tweetResultListener.drainTweets()
-//            for(Tweet tweet in tweetList){
-//                tweet.save()
-//            }
+            for(Tweet tweet in tweetList){
+                tweet.save()
+            }
 
-            println "awake ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
+//            println "awake ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
         }
         twitterStream.removeListener(tweetResultListener)
         twitterStream.shutdown()

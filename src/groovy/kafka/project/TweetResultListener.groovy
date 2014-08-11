@@ -54,8 +54,7 @@ class TweetResultListener implements StatusListener {
 
     @Override
     void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-        println "status deletion? ${statusDeletionNotice.userId}"
-
+//        println "status deletion? ${statusDeletionNotice.userId}"
     }
 
     @Override
