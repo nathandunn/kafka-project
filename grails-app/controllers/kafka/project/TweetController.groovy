@@ -44,7 +44,7 @@ class TweetController {
     def doPullTweets() {
         def stats = twitterHbcReaderService.pullTweets(params.numTweets as Integer)
         println stats
-        flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
+        flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds (${stats.count / stats.fetchTime } tweets / sec)"
         if (stats.count == 0) {
             redirect(action: "pullTweets")
         } else {

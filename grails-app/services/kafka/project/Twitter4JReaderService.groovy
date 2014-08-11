@@ -61,18 +61,18 @@ class Twitter4JReaderService {
         String[] language = [ "en"]
         filterQuery.language(language)
 
-        twitterStream.filter(filterQuery)
+//        twitterStream.filter(filterQuery)
 
-//        twitterStream.sample()
+        twitterStream.sample()
         long startTime = System.currentTimeMillis()
         int count = 0
         while (tweetResultListener.count < tweetResultListener.maxCount) {
             println "sleeping ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
             new Object().sleep(1000)
             List<Tweet> tweetList = tweetResultListener.drainTweets()
-            for(Tweet tweet in tweetList){
-                tweet.save()
-            }
+//            for(Tweet tweet in tweetList){
+//                tweet.save()
+//            }
 
             println "awake ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
         }
