@@ -12,7 +12,8 @@ class TweetController {
 
 //    def elasticSearchService
 
-    def twitterReaderService
+    def twitterHbcReaderService
+    def twitter4JReaderService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -41,7 +42,7 @@ class TweetController {
 
     @Transactional
     def doPullTweets() {
-        def stats = twitterReaderService.pullTweets(params.numTweets as Integer)
+        def stats = twitterHbcReaderService.pullTweets(params.numTweets as Integer)
         println stats
         flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
         if (stats.count == 0) {
@@ -58,6 +59,23 @@ class TweetController {
     def pullTweets() {
 
     }
+
+    def pullTweets4j() {
+
+    }
+
+    @Transactional
+    def doPullTweets4j() {
+        def stats = twitter4JReaderService.pullTweets(params.numTweets as Integer)
+        println stats
+        flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
+        if (stats.count == 0) {
+            redirect(action: "pullTweets4j")
+        } else {
+            redirect(action: "index", params: [sort: "postDate", order: "desc"])
+        }
+    }
+
 
     def create() {
         respond new Tweet(params)

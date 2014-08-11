@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 //import org.apache.hadoop.io.Text
 //import org.apache.hadoop.mapred.*
 @Transactional
-class TwitterReaderService {
+class TwitterHbcReaderService {
 
     def findSimpleStream() {
 
@@ -34,6 +34,7 @@ class TwitterReaderService {
 
         // Define our endpoint: By default, delimited=length is set (we need this for our processor)
         // and stall warnings are on.
+//        StatusesSampleEndpoint endpoint = new StatusesSampleEndpoint();
         StatusesSampleEndpoint endpoint = new StatusesSampleEndpoint();
         endpoint.stallWarnings(false);
 
