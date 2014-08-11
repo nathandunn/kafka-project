@@ -4,5 +4,5 @@ node.master: true
 node.data: true
 index.number_of_shards: 5
 index.number_of_replicas: 1
-discovery.zen.ping.multicast.enabled: false
-#discovery.zen.ping.unicast.hosts: ["nodeB.example.com"]
+discovery.zen.ping.multicast.enabled: true
+# discovery.zen.ping.unicast.hosts: ["localhost"]
