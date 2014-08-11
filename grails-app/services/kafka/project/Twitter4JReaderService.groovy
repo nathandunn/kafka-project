@@ -7,19 +7,7 @@ import twitter4j.TwitterStream
 import twitter4j.TwitterStreamFactory
 import twitter4j.conf.ConfigurationBuilder
 
-//import com.twitter.hbc.ClientBuilder
-//import com.twitter.hbc.core.Constants
-//import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
-//import com.twitter.hbc.core.endpoint.StatusesFirehoseEndpoint
-//import com.twitter.hbc.core.endpoint.StatusesSampleEndpoint
-//import com.twitter.hbc.core.processor.StringDelimitedProcessor
-//import com.twitter.hbc.httpclient.BasicClient
-//import com.twitter.hbc.httpclient.auth.Authentication
-//import com.twitter.hbc.httpclient.auth.OAuth1
-//import org.apache.hadoop.fs.Path
-//import org.apache.hadoop.io.IntWritable
-//import org.apache.hadoop.io.Text
-//import org.apache.hadoop.mapred.*
+
 @Transactional
 class Twitter4JReaderService {
 
@@ -81,6 +69,11 @@ class Twitter4JReaderService {
         while (tweetResultListener.count < tweetResultListener.maxCount) {
             println "sleeping ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
             new Object().sleep(1000)
+            List<Tweet> tweetList = tweetResultListener.drainTweets()
+            for(Tweet tweet in tweetList){
+                tweet.save()
+            }
+
             println "awake ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
         }
         twitterStream.removeListener(tweetResultListener)

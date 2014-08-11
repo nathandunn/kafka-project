@@ -69,12 +69,7 @@ class TweetController {
         def stats = twitter4JReaderService.pullTweets(params.numTweets as Integer)
         println stats
         flash.message = "Pulled ${stats.count} in ${stats.fetchTime} seconds."
-//        if (stats.count == 0) {
-//            redirect(action: "pullTweets4j")
-//        } else {
-//            redirect(action: "index", params: [sort: "postDate", order: "desc"])
             redirect(action: "pullTweets4j")
-//        }
     }
 
 
@@ -203,7 +198,9 @@ class TweetController {
             tweetInstanceList = Tweet.all
         }
         TweetResult results = new TweetResult()
-        results.tweetResults = tweetInstanceList
+        results.tweetResults = tweetInstanceList.sort(){ a, b ->
+            b.postDate <=> a.postDate
+        }
         results.tweetTime = (stopTime - startTime) / 1000f
         render results as JSON
     }

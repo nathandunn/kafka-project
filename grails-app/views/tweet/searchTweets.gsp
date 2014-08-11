@@ -45,6 +45,7 @@
             <td>Message</td>
             <td>User</td>
             <td>Tags</td>
+            <td>Date</td>
             </thead>
             <tbody>
 
@@ -56,6 +57,7 @@
                     <a href="https://twitter.com/{{tweet.userName}}">{{tweet.userName}}</a>
                 </td>
                 <td>{{tweet.tags.split("||").join(" ")}}</td>
+                <td>{{tweet.postDate | date : 'dd-MMM h:mm:ssa'}}</td>
             </tr>
             </tbody>
         </table>
