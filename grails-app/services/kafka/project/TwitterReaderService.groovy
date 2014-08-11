@@ -2,6 +2,7 @@ package kafka.project
 import com.twitter.hbc.ClientBuilder
 import com.twitter.hbc.core.Constants
 import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
+import com.twitter.hbc.core.endpoint.StatusesFirehoseEndpoint
 import com.twitter.hbc.core.endpoint.StatusesSampleEndpoint
 import com.twitter.hbc.core.processor.StringDelimitedProcessor
 import com.twitter.hbc.httpclient.BasicClient
@@ -100,6 +101,8 @@ class TwitterReaderService {
         // Define our endpoint: By default, delimited=length is set (we need this for our processor)
         // and stall warnings are on.
 //        StatusesSampleEndpoint endpoint = new StatusesSampleEndpoint();
+        StatusesFirehoseEndpoint firehoseEndpoint = new StatusesFirehoseEndpoint()
+        firehoseEndpoint.stallWarnings(false);
         StatusesFilterEndpoint endpoint = new StatusesFilterEndpoint();
         endpoint.stallWarnings(false);
 //        Location.Coordinate southwest = new Location.Coordinate(-87.648926, 41.883109);
@@ -125,8 +128,11 @@ class TwitterReaderService {
         terms << "#RETWEET"
         terms << "#TeamFollowBack"
 
-        endpoint.trackTerms(Lists.newArrayList(terms));
-        endpoint.languages(Lists.newArrayList("en"))
+//        endpoint.trackTerms(Lists.newArrayList(terms));
+//        endpoint.languages(Lists.newArrayList("en"))
+
+//        firehoseEndpoint.trackTerms(Lists.newArrayList(terms));
+        firehoseEndpoint.languages(Lists.newArrayList("en"))
 
 //        endpoint.addQueryParameter("retweet","true")
 
@@ -137,6 +143,7 @@ class TwitterReaderService {
                 .name("sampleExampleClient")
                 .hosts(Constants.STREAM_HOST)
                 .endpoint(endpoint)
+//                .endpoint(firehoseEndpoint)
                 .authentication(auth)
                 .processor(new StringDelimitedProcessor(queue))
                 .build();
