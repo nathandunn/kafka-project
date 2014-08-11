@@ -6,5 +6,5 @@ class TweetResult {
 
     Float tweetTime
     List<Tweet> tweetResults
-
+    int totalTweets
 }

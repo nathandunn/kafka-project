@@ -169,28 +169,15 @@ class TweetController {
     }
 
     def doSearchTweets() {
-//        println "Query ${params.message}"
         List<Tweet> tweetInstanceList
         String queryString = ""
         if (params.message) {
-//            println "message only search"
-//            queryString += "message:*${params.message}*"
             queryString += "*${params.message}*"
         }
-//        if(params.tags) {
-//            println "message and tag search"
-//            if(queryString.size()>0) {
-//                queryString += ","
-//            }
-//            queryString += "tags:*${params.tags}*"
-////            def res = Tweet.search("message:*"+params.message+"*,tags:"+params.tags)
-//        }
 
         Long startTime = System.currentTimeMillis()
         Long stopTime = System.currentTimeMillis()
         if (queryString.size() > 0) {
-//            println "queryString ${queryString}"
-
             def res = Tweet.search(queryString)
             stopTime = System.currentTimeMillis()
 
@@ -202,7 +189,12 @@ class TweetController {
         results.tweetResults = tweetInstanceList.sort(){ a, b ->
             b.postDate <=> a.postDate
         }
+        if(results.tweetResults.size()>60  ){
+            results.tweetResults = results.tweetResults.subList(0,60)
+        }
+
         results.tweetTime = (stopTime - startTime) / 1000f
+        results.totalTweets = tweetInstanceList.size()
         render results as JSON
     }
 }
