@@ -1,0 +1,8 @@
+cluster.name: mycluster
+name.name: "nodeD"
+node.master: false
+node.data: true
+index.number_of_shards: 5
+index.number_of_replicas: 2
+discovery.zen.ping.multicast.enabled: true
+#discovery.zen.ping.unicast.hosts: ["localhost"]
