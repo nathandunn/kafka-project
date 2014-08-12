@@ -1,6 +1,6 @@
 cluster.name: mycluster
 name.name: "master"
-#node.master: true
+node.master: true
 node.data: true
 index.number_of_shards: 5
 index.number_of_replicas: 1

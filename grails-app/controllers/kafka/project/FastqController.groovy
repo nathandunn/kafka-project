@@ -4,9 +4,10 @@ import com.google.common.io.Files
 import com.google.common.io.InputSupplier
 import grails.transaction.Transactional
 import org.biojava3.sequencing.io.fastq.FastqReader
-import org.biojava3.sequencing.io.fastq.IlluminaFastqReader
+import org.biojava3.sequencing.io.fastq.SangerFastqReader
 import org.biojava3.sequencing.io.fastq.StreamListener
-import org.springframework.web.multipart.commons.CommonsMultipartFile
+
+import java.nio.charset.Charset
 
 import static org.springframework.http.HttpStatus.*
 
@@ -37,29 +38,64 @@ class FastqController {
         respond new Fastq(params)
     }
 
-    @Transactional
+    def uploadPage(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        render view: "uploadPage", model: [fastqInstance: Fastq.list(params), fastqInstanceCount: Fastq.count()]
+    }
+
+//    @Transactional
     def upload() {
-        CommonsMultipartFile uploadedFile = request.getFile('file')
+//        CommonsMultipartFile uploadedFile = request.getFile('file')
+//        println "context path: "+request.contextPath
+//        println "storage description: "+ uploadedFile.storageDescription
+//        println "file item: "+ uploadedFile.fileItem.toString()
+//        println "original filename: "+ uploadedFile.originalFilename
 //        String fastaContent = uploadedFile.inputStream.text
-//        InputSupplier inputSupplier = Files.newReaderSupplier(new File("illumina.fastq"));
-        println "path ${request.getPathTranslated()}"
-        InputSupplier inputSupplier = Files.newReaderSupplier(new File(request.getPathTranslated()));
+//        Charset charset = Charset.defaultCharset()
+
+        // for each file in, run aSync!!
+//        /Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000007/100splits
+
+        InputSupplier inputSupplier = Files.newReaderSupplier(new File("/Users/NathanDunn/Downloads/SRA/DRR000007.fastq"),Charset.defaultCharset());
+//        InputSupplier inputSupplier = Files.newReaderSupplier(new File("/Users/NathanDunn/Downloads/SRA/SAMPLE.fastq"), Charset.defaultCharset());
+//        println "path ${request.getPathTranslated()}"
+//        InputSupplier inputSupplier = Files.newReader(new File(request.getPathTranslated()));
+//        InputSupplier inputSupplier = ByteStreams.newInputStreamSupplier(uploadedFile.bytes)
 //        FileInputStream inStream = new FileInputStream( uploadedFile.inputStream );
-        FastqReader fastqReader = new IlluminaFastqReader();
+//        FastqReader fastqReader = new IlluminaFastqReader();
+        FastqReader fastqReader = new SangerFastqReader()
+
+
 
         int count = 0
+        int priorCount = 0
+        int epochCount
+        long startTime = System.currentTimeMillis()
+        long check1Time = System.currentTimeMillis()
+        long check2Time = System.currentTimeMillis()
+        long epochTime
         fastqReader.stream(inputSupplier, new StreamListener() {
             @Override
             void fastq(org.biojava3.sequencing.io.fastq.Fastq fastq) {
                 if (fastq.getSequence().length() > 16) {
                     ++count
-                    Fastq fastq1 = new Fastq(
-                            header: fastq.description
-                            , sequence: fastq.sequence
-                            , quality: fastq.quality
-                    ).save()
-                    if (count % 100 == 0) {
-                        fastq1.save(flush: true)
+                    Fastq.withTransaction {
+                        Fastq fastq1 = new Fastq(
+                                header: fastq.description
+                                , sequence: fastq.sequence
+                                , quality: fastq.quality
+                        ).save()
+                        if (count % 200 == 0) {
+                            fastq1.save(flush: true)
+                            if (count % 5000 == 0) {
+                                check2Time = System.currentTimeMillis()
+                                epochTime = (check2Time - check1Time) / 1000.0
+                                epochCount = count - priorCount
+                                println "${epochCount} processed in ${epochTime} s - ${count} total, rate ${epochCount / (epochTime + 1)} "
+                                priorCount = count
+                                check1Time = check2Time
+                            }
+                        }
                     }
                 }
             }
@@ -73,6 +109,9 @@ class FastqController {
 //                }
 //            }
         });
+        long stopTime = System.currentTimeMillis()
+
+        flash.message = "${count} stored in ${(stopTime - startTime) / 1000.0}/s"
 //        FastaReader<ProteinSequence,AminoAcidCompound> fastaReader =
 //                new FastaReader<ProteinSequence,AminoAcidCompound>(
 //                        inStream,
@@ -83,6 +122,7 @@ class FastqController {
 //            System.out.println( entry.getValue().getOriginalHeader() + "=" + entry.getValue().getSequenceAsString() );
 //        }
 
+        redirect action: "list"
     }
 
     @Transactional

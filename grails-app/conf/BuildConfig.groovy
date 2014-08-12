@@ -101,6 +101,8 @@ grails.project.dependency.resolution = {
 //        compile 'com.twitter:hbc-core:1.4.2'
 
 
+        compile ":kickstart-with-bootstrap:1.1.0"
+//        compile ":twitter-bootstrap:3.1.1.3"
 
 
 

@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo elasticsearch -Des.config=configA.yml
+sudo elasticsearch -Des.config=configMaster.yml
