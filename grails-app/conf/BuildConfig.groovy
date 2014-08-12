@@ -66,6 +66,8 @@ grails.project.dependency.resolution = {
         runtime 'com.twitter:hbc-core:2.2.0'
         runtime 'com.twitter:hbc-twitter4j:2.2.0'
         runtime 'org.slf4j:slf4j-api:1.7.7'
+        runtime 'org.biojava:biojava3-core:3.0'
+
 
 
 //        compile 'com.twitter:hbc-core:2.2.0'

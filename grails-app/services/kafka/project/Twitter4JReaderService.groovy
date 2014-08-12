@@ -49,29 +49,34 @@ class Twitter4JReaderService {
         terms << "#ipad"
         terms << "#ipadgames"
         terms << "#gameinsight"
-//        terms << "#RT"
+        terms << "#RT"
         terms << "#android"
         terms << "#androidgames"
-//        terms << "#BestFandom2014"
-//        terms << "#RETWEET"
-//        terms << "#TeamFollowBack"
+        terms << "#BestFandom2014"
+        terms << "#RETWEET"
+        terms << "#TeamFollowBack"
 
         FilterQuery filterQuery = new FilterQuery()
         filterQuery.track(Lists.newArrayList(terms) as String[])
         String[] language = [ "en"]
         filterQuery.language(language)
 
-        twitterStream.filter(filterQuery)
+//        twitterStream.filter(filterQuery)
+        twitterStream.sample()
 
 //        twitterStream.sample()
         long startTime = System.currentTimeMillis()
 //        int count = 0
         while (tweetResultListener.count < tweetResultListener.maxCount) {
             println "sleeping ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
-            new Object().sleep(1000)
+            new Object().sleep(2000)
             List<Tweet> tweetList = tweetResultListener.drainTweets()
             for(Tweet tweet in tweetList){
                 tweet.save()
+            }
+            if(tweetList.size()>0){
+                // flush the first one:
+                tweetList.get(0).save(flush:true)
             }
 
 //            println "awake ${tweetResultListener.count} < ${tweetResultListener.maxCount}"
