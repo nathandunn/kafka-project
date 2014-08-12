@@ -12,17 +12,12 @@
 <body>
 
 
-<g:uploadForm action="upload">
+<g:uploadForm action="upload2">
     %{--<g:hiddenField name="id" value="${erpAnalysisResultInstance.id}"/>--}%
     <input type="file" name="file"/>
     <input type="submit" value="Upload"/>
 </g:uploadForm>
 
-<g:uploadForm action="upload">
-%{--<g:hiddenField name="id" value="${erpAnalysisResultInstance.id}"/>--}%
-    <input type="file" name="file"/>
-    <input type="submit" value="Upload"/>
-</g:uploadForm>
 
 
 <section id="list-fastq" class="first">

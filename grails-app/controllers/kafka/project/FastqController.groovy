@@ -2,14 +2,19 @@ package kafka.project
 
 import com.google.common.io.Files
 import com.google.common.io.InputSupplier
-import grails.converters.JSON
 import grails.transaction.Transactional
 import org.biojava3.sequencing.io.fastq.FastqReader
 import org.biojava3.sequencing.io.fastq.SangerFastqReader
 import org.biojava3.sequencing.io.fastq.StreamListener
+import org.elasticsearch.action.bulk.BulkRequestBuilder
+import org.elasticsearch.action.bulk.BulkResponse
+import org.elasticsearch.client.Client
+import org.elasticsearch.client.transport.TransportClient
+import org.elasticsearch.common.transport.InetSocketTransportAddress
 
 import java.nio.charset.Charset
 
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder
 import static org.springframework.http.HttpStatus.*
 
 /**
@@ -42,6 +47,86 @@ class FastqController {
     def uploadPage(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         render view: "uploadPage", model: [fastqInstance: Fastq.list(params), fastqInstanceCount: Fastq.count()]
+    }
+
+    def uploadPage2(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        render view: "uploadPage2", model: [fastqInstance: Fastq.list(params), fastqInstanceCount: Fastq.count()]
+    }
+
+
+    def upload2() {
+        File file = new File(".")
+        println "local file ${file.absolutePath}"
+//        InputSupplier inputSupplier = Files.newReaderSupplier(new File("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/SAMPLE.fastq"), Charset.defaultCharset());
+//
+//        FastqReader fastqReader = new SangerFastqReader()
+
+
+//        org.elasticsearch.node.Node node = nodeBuilder().node();
+//        Client client = node.client();
+//        Client client = new TransportClient()
+//                .addTransportAddress(new InetSocketTransportAddress("host1", 9300))
+//
+//
+//        BulkRequestBuilder bulkRequest = client.prepareBulk();
+//        bulkRequest.add(client.prepareIndex("twitter", "tweet", "1")
+//                .setSource(jsonBuilder()
+//                .startObject()
+//                .field("user", "kimchy")
+//                .field("postDate", new Date())
+//                .field("message", "trying out Elasticsearch")
+//                .endObject()
+//        )
+//        );
+
+//        int count = 0
+//        int priorCount = 0
+//        int epochCount
+//        long startTime = System.currentTimeMillis()
+//        long check1Time = System.currentTimeMillis()
+//        long check2Time = System.currentTimeMillis()
+//        long epochTime
+//        fastqReader.stream(inputSupplier, new StreamListener() {
+//            @Override
+//            void fastq(org.biojava3.sequencing.io.fastq.Fastq fastq) {
+//                if (fastq.getSequence().length() > 16) {
+//                    ++count
+//                    Fastq.withTransaction {
+//                        Fastq fastq1 = new Fastq(
+//                                header: fastq.description
+//                                , sequence: fastq.sequence
+//                                , quality: fastq.quality
+//                        ).save()
+//                        if (count % 200 == 0) {
+//                            fastq1.save(flush: true)
+//                            if (count % 5000 == 0) {
+//                                check2Time = System.currentTimeMillis()
+//                                epochTime = (check2Time - check1Time) / 1000.0
+//                                epochCount = count - priorCount
+//                                println "${epochCount} processed in ${epochTime} s - ${count} total, rate ${epochCount / (epochTime + 1)} "
+//                                priorCount = count
+//                                check1Time = check2Time
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//        });
+        long stopTime = System.currentTimeMillis()
+
+//        flash.message = "${count} stored in ${(stopTime - startTime) / 1000.0}/s"
+
+//        BulkResponse bulkResponse = bulkRequest.execute().actionGet();
+//        if (bulkResponse.hasFailures()) {
+//            println "failures: ${bulkResponse.buildFailureMessage()}"
+//            // process failures by iterating through each bulk response item
+//        }
+
+//        client.close()
+
+        redirect action: "list"
     }
 
 //    @Transactional
@@ -202,6 +287,8 @@ class FastqController {
         println "params ${params}"
 
         List<Fastq> fastqInstanceList
+
+
         String queryString = ""
         if (params.query) {
             queryString += "*${params.query}*"
@@ -211,7 +298,7 @@ class FastqController {
         Long numHits = 0
         if (queryString.size() > 0) {
             startTime = System.currentTimeMillis()
-            def res = Fastq.search(queryString,[max:100])
+            def res = Fastq.search(queryString,[size:100])
             stopTime = System.currentTimeMillis()
 //            numHits = Fastq.countHits("*${params.query}*")
             fastqInstanceList = res.searchResults

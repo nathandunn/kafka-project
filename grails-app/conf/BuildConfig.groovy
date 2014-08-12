@@ -69,6 +69,7 @@ grails.project.dependency.resolution = {
         runtime 'org.slf4j:slf4j-api:1.7.7'
         runtime 'org.biojava:biojava3-core:3.0.8'
         runtime 'org.biojava:biojava3-sequencing:3.0.8'
+        runtime 'org.elasticsearch:elasticsearch:1.3.1'
 
 
 
