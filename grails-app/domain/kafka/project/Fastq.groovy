@@ -11,6 +11,7 @@ class Fastq {
 //	Long	version
     static searchable = true
 
+//    String name
     String header
     String sequence
     String quality

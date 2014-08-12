@@ -17,3 +17,5 @@ Htseq-grails-grailsPlugins.iml
 htseq-grails-grailsPlugins.iml
 .idea/**
 data/**
+elasticsearch/**
+*.swp
