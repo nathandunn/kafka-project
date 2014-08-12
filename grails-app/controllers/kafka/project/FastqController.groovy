@@ -2,6 +2,7 @@ package kafka.project
 
 import com.google.common.io.Files
 import com.google.common.io.InputSupplier
+import grails.converters.JSON
 import grails.transaction.Transactional
 import org.biojava3.sequencing.io.fastq.FastqReader
 import org.biojava3.sequencing.io.fastq.SangerFastqReader
@@ -56,8 +57,11 @@ class FastqController {
         // for each file in, run aSync!!
 //        /Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000007/100splits
 
-        InputSupplier inputSupplier = Files.newReaderSupplier(new File("/Users/NathanDunn/Downloads/SRA/DRR000007.fastq"),Charset.defaultCharset());
+//        InputSupplier inputSupplier = Files.newReaderSupplier(new File("/Users/NathanDunn/Downloads/SRA/DRR000007.fastq"),Charset.defaultCharset());
 //        InputSupplier inputSupplier = Files.newReaderSupplier(new File("/Users/NathanDunn/Downloads/SRA/SAMPLE.fastq"), Charset.defaultCharset());
+        File file = new File(".")
+        println "local file ${file.absolutePath}"
+        InputSupplier inputSupplier = Files.newReaderSupplier(new File("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/SAMPLE.fastq"), Charset.defaultCharset());
 //        println "path ${request.getPathTranslated()}"
 //        InputSupplier inputSupplier = Files.newReader(new File(request.getPathTranslated()));
 //        InputSupplier inputSupplier = ByteStreams.newInputStreamSupplier(uploadedFile.bytes)
@@ -192,6 +196,47 @@ class FastqController {
             }
             '*' { render status: NO_CONTENT }
         }
+    }
+
+    def search() {
+        println "params ${params}"
+
+        List<Fastq> fastqInstanceList
+        String queryString = ""
+        if (params.query) {
+            queryString += "*${params.query}*"
+        }
+
+        Long startTime , stopTime
+        Long numHits = 0
+        if (queryString.size() > 0) {
+            startTime = System.currentTimeMillis()
+            def res = Fastq.search(queryString,[max:100])
+            stopTime = System.currentTimeMillis()
+//            numHits = Fastq.countHits("*${params.query}*")
+            fastqInstanceList = res.searchResults
+            numHits = res.total
+        }
+        else {
+            fastqInstanceList = []
+        }
+        Long totalTime = stopTime - startTime
+
+
+//        FastqResult results = new FastqResult()
+//        results.tweetResults = tweetInstanceList.sort(){ a, b ->
+//            b.postDate <=> a.postDate
+//        }
+//        if(results.tweetResults.size()>60  ){
+//            results.tweetResults = results.tweetResults.subList(0,60)
+//        }
+
+//        results.tweetTime = (stopTime - startTime) / 1000f
+//        results.totalFastqs = tweetInstanceList.size()
+//        render results as JSON
+        flash.message = "${numHits}/${Fastq.count} found in ${totalTime} ms"
+        render view: "list" , model: [fastqInstanceList:  fastqInstanceList,fastqInstanceCount: fastqInstanceList.size()]
+
     }
 
     protected void notFound() {
