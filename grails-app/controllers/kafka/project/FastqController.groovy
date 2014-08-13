@@ -317,7 +317,7 @@ class FastqController {
 //        results.tweetTime = (stopTime - startTime) / 1000f
 //        results.totalFastqs = tweetInstanceList.size()
 //        render results as JSON
-        flash.message = "${numHits}/${totalCount} found in ${totalTime} ms"
+        flash.message = "${numHits}/${totalCount} found in ${totalTime} ms for query '${queryString}'"
         render view: "list", model: [fastqInstanceList: fastqInstanceList, fastqInstanceCount: fastqInstanceList.size()]
 
     }

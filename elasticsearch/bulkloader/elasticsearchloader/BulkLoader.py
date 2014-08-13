@@ -17,8 +17,9 @@ from Bio import SeqIO
 
 #print len(record)
 
-handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000002.fastq", "rU")
+#handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000002.fastq", "rU")
 #handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/SAMPLE.fastq", "rU")
+handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/LARGE_SAMPLE.fastq", "rU")
 
 count = 0 
 start_time = time.time()
