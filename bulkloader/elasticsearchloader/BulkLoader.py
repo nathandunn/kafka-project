@@ -17,21 +17,21 @@ from Bio import SeqIO
 
 #print len(record)
 
-handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000007.fastq", "rU")
-#handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/SAMPLE.fastq", "rU")
+#handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000007.fastq", "rU")
+handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/SAMPLE.fastq", "rU")
 
 count = 0 
 start_time = time.time()
 epoch_start_time = time.time()
 epoch_count = 10000
 
-for record in SeqIO.parse(handle, "fastq") :
+for record in SeqIO.parse(handle, "fastq-sanger") :
 #  print record
 #  print "NAME: " + record.name
 #  print "DESCRIPTION: " + record.description
 #  print "SEQ: " + record.seq
 #  print "QUAL: " + str(record.letter_annotations["phred_quality"])
-  es.index(index="kafka.project",doc_type="fastq",body={ "header":record.description ,"sequence": str(record.seq) ,"quality":str(record.letter_annotations["phred_quality"]) })
+  es.index(index="kafka.project",doc_type="fastq",body={ "header":record.description ,"sequence": str(record.seq) ,"quality":str(record.letter_annotations["phred_quality"]).join ("") })
   count = count + 1
   if(count%epoch_count==0):
     epoch_stop_time = time.time()
