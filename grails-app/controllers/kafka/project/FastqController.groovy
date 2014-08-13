@@ -33,7 +33,9 @@ class FastqController {
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Fastq.list(params), model: [fastqInstanceCount: Fastq.count()]
+//        respond Fastq.list(params), model: [fastqInstanceCount: Fastq.count()]
+        def res = Fastq.search("*")
+        respond res.searchResults, model: [fastqInstanceCount: res.total]
     }
 
     def show(Fastq fastqInstance) {
@@ -298,7 +300,8 @@ class FastqController {
         Long numHits = 0
         if (queryString.size() > 0) {
             startTime = System.currentTimeMillis()
-            def res = Fastq.search(queryString,[size:100])
+//            params.size = 100
+            def res = Fastq.search(queryString)
             stopTime = System.currentTimeMillis()
 //            numHits = Fastq.countHits("*${params.query}*")
             fastqInstanceList = res.searchResults
@@ -308,6 +311,8 @@ class FastqController {
             fastqInstanceList = []
         }
         Long totalTime = stopTime - startTime
+
+        Integer totalCount = Fastq.search("*").total
 
 
 //        FastqResult results = new FastqResult()
@@ -321,7 +326,7 @@ class FastqController {
 //        results.tweetTime = (stopTime - startTime) / 1000f
 //        results.totalFastqs = tweetInstanceList.size()
 //        render results as JSON
-        flash.message = "${numHits}/${Fastq.count} found in ${totalTime} ms"
+        flash.message = "${numHits}/${totalCount} found in ${totalTime} ms"
         render view: "list" , model: [fastqInstanceList:  fastqInstanceList,fastqInstanceCount: fastqInstanceList.size()]
 
     }

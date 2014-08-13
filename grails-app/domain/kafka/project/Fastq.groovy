@@ -12,6 +12,7 @@ class Fastq {
     static searchable = true
 
 //    String name
+    String id
     String header
     String sequence
     String quality

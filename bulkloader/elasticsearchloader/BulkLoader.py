@@ -18,6 +18,7 @@ from Bio import SeqIO
 #print len(record)
 
 handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000007.fastq", "rU")
+#handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/SAMPLE.fastq", "rU")
 
 count = 0 
 start_time = time.time()
@@ -30,7 +31,7 @@ for record in SeqIO.parse(handle, "fastq") :
 #  print "DESCRIPTION: " + record.description
 #  print "SEQ: " + record.seq
 #  print "QUAL: " + str(record.letter_annotations["phred_quality"])
-  es.index(index="kafka.project",doc_type="test-type",body={ "header":record.description ,"sequence": str(record.seq) ,"quality":str(record.letter_annotations["phred_quality"]) })
+  es.index(index="kafka.project",doc_type="fastq",body={ "header":record.description ,"sequence": str(record.seq) ,"quality":str(record.letter_annotations["phred_quality"]) })
   count = count + 1
   if(count%epoch_count==0):
     epoch_stop_time = time.time()

@@ -12,6 +12,7 @@
 <body>
 
 <section id="list-fastq" class="first">
+    Total: ${fastqInstanceCount}
 
 	<table class="table table-bordered margin-top-medium">
 		<thead>
