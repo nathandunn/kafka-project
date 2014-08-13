@@ -6,15 +6,9 @@ import grails.transaction.Transactional
 import org.biojava3.sequencing.io.fastq.FastqReader
 import org.biojava3.sequencing.io.fastq.SangerFastqReader
 import org.biojava3.sequencing.io.fastq.StreamListener
-import org.elasticsearch.action.bulk.BulkRequestBuilder
-import org.elasticsearch.action.bulk.BulkResponse
-import org.elasticsearch.client.Client
-import org.elasticsearch.client.transport.TransportClient
-import org.elasticsearch.common.transport.InetSocketTransportAddress
 
 import java.nio.charset.Charset
 
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder
 import static org.springframework.http.HttpStatus.*
 
 /**
@@ -63,7 +57,6 @@ class FastqController {
 //        InputSupplier inputSupplier = Files.newReaderSupplier(new File("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/SAMPLE.fastq"), Charset.defaultCharset());
 //
 //        FastqReader fastqReader = new SangerFastqReader()
-
 
 //        org.elasticsearch.node.Node node = nodeBuilder().node();
 //        Client client = node.client();
@@ -296,7 +289,7 @@ class FastqController {
             queryString += "*${params.query}*"
         }
 
-        Long startTime , stopTime
+        Long startTime, stopTime
         Long numHits = 0
         if (queryString.size() > 0) {
             startTime = System.currentTimeMillis()
@@ -306,14 +299,12 @@ class FastqController {
 //            numHits = Fastq.countHits("*${params.query}*")
             fastqInstanceList = res.searchResults
             numHits = res.total
-        }
-        else {
+        } else {
             fastqInstanceList = []
         }
         Long totalTime = stopTime - startTime
 
         Integer totalCount = Fastq.search("*").total
-
 
 //        FastqResult results = new FastqResult()
 //        results.tweetResults = tweetInstanceList.sort(){ a, b ->
@@ -327,7 +318,7 @@ class FastqController {
 //        results.totalFastqs = tweetInstanceList.size()
 //        render results as JSON
         flash.message = "${numHits}/${totalCount} found in ${totalTime} ms"
-        render view: "list" , model: [fastqInstanceList:  fastqInstanceList,fastqInstanceCount: fastqInstanceList.size()]
+        render view: "list", model: [fastqInstanceList: fastqInstanceList, fastqInstanceCount: fastqInstanceList.size()]
 
     }
 
