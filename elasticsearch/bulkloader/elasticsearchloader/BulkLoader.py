@@ -17,7 +17,7 @@ from Bio import SeqIO
 
 #print len(record)
 
-handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000007.fastq", "rU")
+handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/DRR000002.fastq", "rU")
 #handle = open("/Users/NathanDunn/hg/kafka-project/elasticsearch/SRA/SAMPLE.fastq", "rU")
 
 count = 0 
